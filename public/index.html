@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Sistema Pacientes</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>SISTEMA BETA DE GESTIÓN DE PACIENTES - CAP II LURÍN</h1>
+  </header>
+
+  <main>
+    <div class="login-container">
+      <h2>Iniciar Sesión</h2>
+      <form id="loginForm">
+        <input type="text" id="usuario" placeholder="Usuario" required minlength="8" maxlength="8">
+        <input type="password" id="password" placeholder="Contraseña" required>
+        <button type="submit">Ingresar</button>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const usuario = document.getElementById("usuario").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        const res = await fetch("http://localhost:5000/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ usuario, password })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          // ✅ Guardar token y rol
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("rol", data.rol);
+
+          // ✅ Redirigir a menú
+          window.location.href = "menu.html";
+        } else {
+          alert(data.error || "Credenciales incorrectas");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Error de conexión con el servidor");
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+
+

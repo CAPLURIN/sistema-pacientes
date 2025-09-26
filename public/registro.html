@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro de Pacientes</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f4f6f9; }
+    header { background: #003366; color: white; padding: 15px; position: relative; text-align: center; }
+    header h1 { margin: 0; }
+    .header-buttons { position: absolute; top: 15px; right: 20px; display: flex; gap: 10px; }
+    .header-buttons a, .header-buttons button {
+      padding: 8px 14px; border: none; border-radius: 5px;
+      cursor: pointer; color: white; text-decoration: none;
+    }
+    .btn-home { background: #007bff; }
+    .btn-home:hover { background: #0056b3; }
+    .btn-logout { background: #dc3545; }
+    .btn-logout:hover { background: #a71d2a; }
+
+    .container { display: flex; justify-content: space-between; padding: 20px; gap: 20px; }
+    .card { background: white; padding: 20px; border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15); flex: 1; }
+    .card h2 { margin-top: 0; color: #003366; }
+
+    /* Formulario en 2 columnas */
+    form { display: grid; grid-template-columns: 120px 1fr; gap: 10px 15px; }
+    label { font-weight: bold; color: #333; text-align: right; padding-top: 6px; }
+    input, select { padding: 8px; border: 1px solid #ccc; border-radius: 5px; width: 100%; }
+    button[type="submit"] {
+      grid-column: 1 / span 2;
+      background: #28a745; color: white; border: none;
+      padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold;
+    }
+    button[type="submit"]:hover { background: #218838; }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    th { background: #003366; color: white; }
+
+    .actions button { border: none; cursor: pointer; padding: 6px; border-radius: 4px; margin: 0 2px; }
+    .edit { background: #ffc107; color: black; }
+    .edit:hover { background: #e0a800; }
+    .delete { background: #dc3545; color: white; }
+    .delete:hover { background: #a71d2a; }
+
+    .search-bar { margin-bottom: 10px; display: flex; gap: 10px; }
+    .search-bar input { flex: 1; padding: 6px; border: 1px solid #ccc; border-radius: 4px; }
+    .search-bar button { padding: 6px 12px; border: none; background: #007bff; color: white; border-radius: 4px; cursor: pointer; }
+    .search-bar button:hover { background: #0056b3; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Registro de Pacientes</h1>
+    <div class="header-buttons">
+      <a href="menu.html" class="btn-home">Inicio</a>
+      <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Formulario -->
+    <div class="card">
+      <h2>Formulario</h2>
+      <form id="pacienteForm">
+        <input type="hidden" id="pacienteId">
+        <label for="dni">DNI:</label><input type="text" id="dni" required>
+        <label for="nombre">Nombre:</label><input type="text" id="nombre" required>
+        <label for="edad">Edad:</label><input type="number" id="edad" required>
+        <label for="telefono">Teléfono:</label><input type="text" id="telefono" required>
+        <label for="servicio">Servicio:</label>
+        <select id="servicio" required>
+          <option value="">Seleccione...</option>
+          <option>Odontología</option>
+          <option>Enfermería</option>
+          <option>Ginecología</option>
+          <option>Medicina</option>
+        </select>
+        <label for="actividad">Actividad:</label><input type="text" id="actividad" required>
+        <label for="accion">Acción:</label><input type="text" id="accion" required>
+        <label for="direccion">Dirección:</label><input type="text" id="direccion" required>
+        <button type="submit">Guardar</button>
+      </form>
+    </div>
+
+    <!-- Tabla -->
+    <div class="card">
+      <h2>Pacientes Registrados</h2>
+      <div class="search-bar">
+        <input type="text" id="buscarDni" placeholder="Buscar por DNI">
+        <button onclick="buscarPaciente()">Buscar</button>
+        <button onclick="cargarPacientes()">Ver Todos</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>DNI</th><th>Nombre</th><th>Edad</th><th>Teléfono</th>
+            <th>Servicio</th><th>Actividad</th><th>Acción</th><th>Dirección</th><th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tablaPacientes"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = "http://localhost:5000/api/pacientes";
+
+    async function cargarPacientes() {
+      const res = await fetch(API_URL);
+      const data = await res.json();
+      mostrarPacientes(data);
+    }
+
+    function mostrarPacientes(pacientes) {
+      const tbody = document.getElementById("tablaPacientes");
+      tbody.innerHTML = "";
+      pacientes.forEach(p => {
+        const row = `<tr>
+          <td>${p.dni || ""}</td>
+          <td>${p.nombre || ""}</td>
+          <td>${p.edad || ""}</td>
+          <td>${p.telefono || ""}</td>
+          <td>${p.servicio || ""}</td>
+          <td>${p.actividad || ""}</td>
+          <td>${p.accion || ""}</td>
+          <td>${p.direccion || ""}</td>
+          <td class="actions">
+            <button class="edit" onclick="editarPaciente('${p._id}')">✏️</button>
+            <button class="delete" onclick="eliminarPaciente('${p._id}')">🗑️</button>
+          </td>
+        </tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+
+    document.getElementById("pacienteForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const id = document.getElementById("pacienteId").value;
+      const paciente = {
+        dni: document.getElementById("dni").value,
+        nombre: document.getElementById("nombre").value,
+        edad: document.getElementById("edad").value,
+        telefono: document.getElementById("telefono").value,
+        servicio: document.getElementById("servicio").value,
+        actividad: document.getElementById("actividad").value,
+        accion: document.getElementById("accion").value,
+        direccion: document.getElementById("direccion").value,
+      };
+      const method = id ? "PUT" : "POST";
+      const url = id ? `${API_URL}/${id}` : API_URL;
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(paciente)
+      });
+      if (res.ok) {
+        document.getElementById("pacienteForm").reset();
+        document.getElementById("pacienteId").value = "";
+        cargarPacientes();
+      } else {
+        const error = await res.json();
+        alert(error.error || "Error al guardar");
+      }
+    });
+
+    async function editarPaciente(id) {
+      const res = await fetch(`${API_URL}/${id}`);
+      if (res.ok) {
+        const paciente = await res.json();
+        document.getElementById("pacienteId").value = paciente._id;
+        document.getElementById("dni").value = paciente.dni;
+        document.getElementById("nombre").value = paciente.nombre;
+        document.getElementById("edad").value = paciente.edad;
+        document.getElementById("telefono").value = paciente.telefono;
+        document.getElementById("servicio").value = paciente.servicio;
+        document.getElementById("actividad").value = paciente.actividad;
+        document.getElementById("accion").value = paciente.accion;
+        document.getElementById("direccion").value = paciente.direccion;
+      }
+    }
+
+    async function eliminarPaciente(id) {
+      if (!confirm("¿Seguro que deseas eliminar este paciente?")) return;
+      const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        cargarPacientes();
+      } else {
+        alert("Error al eliminar");
+      }
+    }
+
+    async function buscarPaciente() {
+      const dni = document.getElementById("buscarDni").value;
+      if (!dni) return cargarPacientes();
+      const res = await fetch(`${API_URL}/dni/${dni}`);
+      if (res.ok) {
+        const paciente = await res.json();
+        mostrarPacientes([paciente]);
+      } else {
+        alert("Paciente no encontrado");
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem("token");
+      window.location.href = "index.html";
+    }
+
+    cargarPacientes();
+  </script>
+</body>
+</html>
+
+
+
+
+
+

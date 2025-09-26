@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Listado de Pacientes</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>SISTEMA BETA DE GESTIÓN DE PACIENTES - CAP II LURÍN</h1>
+    <div class="header-buttons">
+      <button onclick="window.location.href='menu.html'" class="inicio-btn">Inicio</button>
+      <button id="logoutBtn" class="logout-btn">Cerrar Sesión</button>
+    </div>
+  </header>
+
+  <main class="content">
+    <h2>Consultas de Pacientes</h2>
+
+    <!-- Buscador -->
+    <input type="text" id="searchInput" placeholder="Buscar por DNI o nombre" class="search-box">
+
+    <!-- Tabla de pacientes -->
+    <table class="patients-table">
+      <thead>
+        <tr>
+          <th>DNI</th>
+          <th>Nombre</th>
+          <th>Edad</th>
+          <th>Dirección</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="patientsTableBody">
+        <!-- Aquí se insertan los pacientes dinámicamente -->
+      </tbody>
+    </table>
+  </main>
+
+  <script>
+    // Verificar sesión
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "index.html";
+    }
+
+    // Logout
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.clear();
+      window.location.href = "index.html";
+    });
+
+    // Cargar pacientes
+    async function loadPatients() {
+      try {
+        const res = await fetch("http://localhost:5000/api/pacientes", {
+          headers: { "Authorization": "Bearer " + token }
+        });
+        const data = await res.json();
+
+        const tbody = document.getElementById("patientsTableBody");
+        tbody.innerHTML = "";
+
+        data.forEach(p => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${p.dni}</td>
+            <td>${p.nombre}</td>
+            <td>${p.edad}</td>
+            <td>${p.direccion}</td>
+            <td>
+              <button onclick="editPatient('${p._id}')">Editar</button>
+              <button onclick="deletePatient('${p._id}')">Eliminar</button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+      } catch (err) {
+        console.error("Error al cargar pacientes:", err);
+      }
+    }
+
+    // Buscar en tabla
+    document.getElementById("searchInput").addEventListener("keyup", function() {
+      const filter = this.value.toLowerCase();
+      const rows = document.querySelectorAll("#patientsTableBody tr");
+      rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(filter) ? "" : "none";
+      });
+    });
+
+    // Editar paciente (placeholder)
+    function editPatient(id) {
+      alert("Editar paciente: " + id);
+      // Aquí redirigiremos a editar.html
+    }
+
+    // Eliminar paciente
+    async function deletePatient(id) {
+      if (confirm("¿Seguro que deseas eliminar este paciente?")) {
+        await fetch(`http://localhost:5000/api/pacientes/${id}`, {
+          method: "DELETE",
+          headers: { "Authorization": "Bearer " + token }
+        });
+        loadPatients(); // recargar la tabla
+      }
+    }
+
+    // Cargar al inicio
+    loadPatients();
+  </script>
+</body>
+</html>

@@ -1,0 +1,320 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  background: linear-gradient(to bottom, #e0f7fa, #ffffff);
+  color: #333;
+  min-height: 100vh;
+}
+
+/* HEADER */
+header {
+  background: #0077c2;
+  color: #fff;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+header h1 {
+  font-size: 20px;
+}
+
+header button {
+  background: #ff5252;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+header button:hover {
+  background: #e53935;
+}
+
+/* LOGIN */
+.login-container {
+  width: 350px;
+  margin: 120px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+.login-container h2 {
+  margin-bottom: 20px;
+  color: #0077c2;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.login-container button {
+  width: 100%;
+  padding: 12px;
+  background: #0077c2;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-container button:hover {
+  background: #005fa3;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}
+
+
+/* Íconos dentro del menú */
+.menu-item i {
+  font-size: 40px;
+  margin-bottom: 15px;
+  display: block;
+}
+
+/* BARRA SUPERIOR */
+header {
+  background: linear-gradient(90deg, #005fa3, #0077c2);
+  color: #fff;
+  padding: 20px 30px;
+  display: flex;
+  justify-content: center;   /* CENTRA el contenido */
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Texto centrado y más grande */
+header h1 {
+  font-size: 22px;    /* un poquito más grande */
+  letter-spacing: 1px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* ===== Estilos para el submenú de administración ===== */
+#adminMenu h2 {
+  text-align: center;
+  color: #0077c2;
+  margin-bottom: 15px;
+}
+
+.menu-item.admin {
+  background: #ff5722;
+  color: white;
+}
+
+.menu-item.admin:hover {
+  background: #e64a19;
+}
+
+header {
+  display: flex;
+  justify-content: center;   /* centra el contenido principal */
+  align-items: center;
+  background: #0077c2;
+  color: white;
+  padding: 15px 30px;
+  position: relative; /* para posicionar el botón a la derecha */
+}
+
+header h1 {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+  text-align: center;
+  flex: 1;  /* ocupa todo el espacio disponible */
+}
+
+
+
+
+
+.menu-grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  margin-top: 80px;
+}
+
+/* Aplica a los <a class="menu-item"> */
+.menu-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  width: 220px;
+  height: 80px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  font-weight: bold;
+  font-size: 18px;
+  color: #0077c2;
+  text-decoration: none; /* quita el subrayado */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.menu-item:hover {
+  background: #0077c2;
+  color: #fff;
+  transform: translateY(-5px);
+}
+
+
+
+.form-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-container input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-container button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-container button:hover {
+  background: #0056b3;
+}
+
+/* boton inicio */
+
+header {
+  position: relative;
+  background-color: #007bba;
+  color: white;
+  padding: 15px 20px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+header {
+  background-color: #2c3e50; /* Azul oscuro */
+  color: white;
+  padding: 15px;
+  text-align: center;
+  position: relative;
+}
+
+.header-buttons {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 10px;
+}
+
+.header-buttons a {
+  text-decoration: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-weight: bold;
+  color: white;
+}
+
+.header-buttons .inicio-btn {
+  background-color: #3498db; /* Azul */
+}
+
+.header-buttons .cerrar-btn {
+  background-color: #e74c3c; /* Rojo */
+}
+
+.header-buttons .inicio-btn:hover {
+  background-color: #2980b9;
+}
+
+.header-buttons .cerrar-btn:hover {
+  background-color: #c0392b;
+}
+
+
+/* -------------------------------------------------------------- */ 
+
+#pacienteForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#pacienteForm label {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+#pacienteForm input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 50%; /* que ocupen todo el ancho */
+  max-width: 400px; /* opcional para no ser tan largos */
+}
+
+#pacienteForm button {
+  width: fit-content;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  align-self: flex-start; /* botón alineado a la izquierda */
+}
+
+#pacienteForm button:hover {
+  background-color: #0056b3;
+}
+
